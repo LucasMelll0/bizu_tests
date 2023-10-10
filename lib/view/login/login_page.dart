@@ -71,6 +71,7 @@ class _LoginPageState extends State<LoginPage> {
                           },
                           label: const Text('Insira seu Email'),
                           prefixIcon: const Icon(Icons.email_rounded),
+                          maxLines: 1,
                         ),
                       ),
                       Padding(
