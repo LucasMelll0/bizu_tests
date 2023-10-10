@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:login_tests/repository/user_repository.dart';
 import 'package:login_tests/utils/resource.dart';
 import 'package:login_tests/view/default_widgets/default_password_text_input.dart';
 import 'package:login_tests/view/default_widgets/default_text_field.dart';
 import 'package:login_tests/web_client/request/UserLoginRequest.dart';
-import 'package:login_tests/web_client/web_client.dart';
 
 import '../../res/dimens.dart';
 
@@ -21,12 +21,11 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget? loginButtonLabelWidget = const Text('Entrar');
 
-  final AppWebClient client = Get;
+  final UserRepository repository = Get.find<UserRepository>();
 
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-    var scaffoldMessage = ScaffoldMessenger.of(context);
     const bizuImage =
         'https://bizucash.com.br/wp-content/uploads/2023/01/Logotipo-Horizontal_Color-132-bisucash-andrevinhosa.png';
     return Scaffold(
@@ -95,15 +94,20 @@ class _LoginPageState extends State<LoginPage> {
                                 onPressed: () {
                                   var request = UserLoginRequest(
                                       email: email, password: password);
-                                  var response =
-                                      client.userService.loginUser(request);
+                                  var response = repository.loginUser(request);
                                   response.then((value) => {
-                                        if(value is Success) {
-                                          Get.snackbar('Sucesso', 'Bem vindo ${request.email}'),
-                                          Get.toNamed('/test')
-                                        }else {
-                                          Get.snackbar('Erro', (value as Error).error)
-                                        }
+                                        if (value is Success)
+                                          {
+                                            print((value as Success).data),
+                                            Get.snackbar('Sucesso',
+                                                'Bem vindo ${request.email}'),
+                                            Get.toNamed('/test')
+                                          }
+                                        else
+                                          {
+                                            Get.snackbar(
+                                                'Erro', (value as Error).error)
+                                          }
                                       });
                                 },
                                 child: loginButtonLabelWidget),

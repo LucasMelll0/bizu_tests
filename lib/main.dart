@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:login_tests/application/application_bindings.dart';
 import 'package:login_tests/view/login/login_page.dart';
 import 'package:login_tests/view/test/test_page.dart';
 
@@ -16,6 +17,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Flutter tests',
       debugShowCheckedModeBanner: false,
+      initialBinding: ApplicationBindings(),
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF207A00)),
         useMaterial3: true,
