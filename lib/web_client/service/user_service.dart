@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
+import 'package:get/get.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:logger/logger.dart';
 import 'package:login_tests/model/company.dart';
 import 'package:login_tests/utils/resource.dart';
 import 'package:login_tests/web_client/request/UserLoginRequest.dart';
@@ -7,9 +9,11 @@ import 'package:login_tests/web_client/request/UserLoginRequest.dart';
 import '../response/login_response.dart';
 
 class UserService {
-  const UserService({required this.client});
+  UserService({required this.client});
 
   final Dio client;
+
+  final Logger log = Get.find<Logger>();
 
   Future<Resource<String>> loginUser(UserLoginRequest request) async {
     try {
@@ -19,7 +23,7 @@ class UserService {
       var token = LoginResponse.fromJson(response.data).metadata.data;
       return Future.value(Success(data: token));
     } on DioException catch (e) {
-      print(e.error);
+      log.e(e.message);
       if (e.response?.statusCode == 400) {
         return Future.value(Error(error: 'Verifique os campos de email/senha'));
       }
@@ -33,10 +37,10 @@ class UserService {
       Map<String, dynamic> decodedToken = JwtDecoder.decode(token!);
       var companyId = decodedToken['companyid'];
       final response = await client.get('Company/$companyId');
-      print(response.data['metadata']['data']['name']);
       var company = Company.fromJson(response.data);
       return Future.value(Success(data: company));
     }on DioException catch (e) {
+      log.e(e.message);
       if(e.response?.statusCode == 404) {
         return Future.value(Error(error: 'Empresa não encontrada'));
       }

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:login_tests/application/application_bindings.dart';
 import 'package:login_tests/view/login/login_page.dart';
+import 'package:login_tests/view/login/login_page_bindings.dart';
+import 'package:login_tests/view/test/test_bindings.dart';
 import 'package:login_tests/view/test/test_page.dart';
 
 void main() {
@@ -26,8 +28,12 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: '/',
           page: () => const LoginPage(),
+          binding: LoginBindings(),
           children: [
-            GetPage(name: '/test', page: () => const TestPage()),
+            GetPage(
+                name: '/test',
+                page: () => const TestPage(),
+                binding: TestBindings()),
           ],
         )
       ],

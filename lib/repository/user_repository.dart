@@ -1,3 +1,6 @@
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:logger/logger.dart';
 import 'package:login_tests/data/shared_preferences_helper.dart';
 import 'package:login_tests/web_client/request/UserLoginRequest.dart';
 import 'package:login_tests/web_client/service/user_service.dart';
@@ -11,6 +14,7 @@ class UserRepository {
 
   final UserService service;
   final SharedPreferencesHelper prefs;
+  final Logger log = Get.find<Logger>();
 
 
   Future<Resource<String>> loginUser(UserLoginRequest request) async {
@@ -20,6 +24,7 @@ class UserRepository {
       var isSuccess = await prefs.saveToken(token);
       return isSuccess ? response : Error(error: 'Falha ao salvar token');
     }
+    log.i(response);
     return Future.value(response);
   }
 

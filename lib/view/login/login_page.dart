@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 import 'package:login_tests/repository/user_repository.dart';
 import 'package:login_tests/utils/resource.dart';
 import 'package:login_tests/view/default_widgets/default_password_text_input.dart';
@@ -18,8 +19,8 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   String email = "";
   String password = "";
-
   Widget? loginButtonLabelWidget = const Text('Entrar');
+  final Logger log = Get.find<Logger>();
 
   final UserRepository repository = Get.find<UserRepository>();
 
@@ -99,13 +100,14 @@ class _LoginPageState extends State<LoginPage> {
                                   response.then((value) => {
                                         if (value is Success)
                                           {
-                                            print((value as Success).data),
+                                            log.i((value as Success).data),
                                             Get.snackbar('Sucesso',
                                                 'Bem vindo ${request.email}'),
                                             Get.toNamed('/test')
                                           }
                                         else
                                           {
+                                            log.e((value as Error).error),
                                             Get.snackbar(
                                                 'Erro', (value as Error).error)
                                           }
